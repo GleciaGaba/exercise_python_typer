@@ -5,6 +5,7 @@ from pathlib import Path
 app = typer.Typer()
 
 
+@app.command('run')
 def main(extension: str,
          directory: Optional[str] = typer.Option(None, "--directory", "-d", help="Dossier dans lequel checher."),
          delete: bool = typer.Option(False, "--delete", "-del", help="Supprime les fichiers trouvés.")):
@@ -39,6 +40,15 @@ def main(extension: str,
         for file in files:
             typer.echo(file)
 
+@app.command()
+def search(extension: str):
+    """Chercher les fichiers avec l'extension donnée."""
+    main(extension=extension, directory=None, delete=False)
+
+@app.command()
+def delete(extension: str):
+    """Supprimer les fichiers avec l'extension donnée"""
+    main(extension=extension, directory=None, delete=True)
 
 if __name__ == '__main__':
-    typer.run(main)
+    app()
